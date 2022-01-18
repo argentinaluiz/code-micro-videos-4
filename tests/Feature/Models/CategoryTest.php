@@ -55,6 +55,7 @@ class CategoryTest extends TestCase
         $id=$category->id;
         $this->assertTrue($category->delete($id));
         $this->assertNull(Category::find($id));
+        
     }
 
     public function testUpdate(){
