@@ -8,34 +8,45 @@ abstract class BasicCrudController extends Controller
 {
     protected abstract function model();
     protected abstract function rulesStore();
-
+    protected abstract function rulesUpdate();
     public function index()
     {
         return $this->model()::all();
     }
 
+    protected function findOrFail($id){
+        $model=$this->model();
+        $keyName=(new $model)->getRouteKeyName();
+        return $this->model()::where($keyName,$id)->firstOrFail();
+    }
 
     public function store(Request $request)
     { 
-        $this->validate($request,$this->rulesStore());
-    }
-/*
-    public function show(Category $category)
-    {
-        return $category;
+        $validateData=$this->validate($request,$this->rulesStore());
+        $obj=$this->model()::create($validateData);
+        $obj->refresh();
+        return $obj;
     }
 
-    public function update(Request $request, Category $category)
+    public function show($id)
     {
-        $this->validate($request,$this->rules);
-        $category->update($request->all());
-        return $category;
+        $obj=$this->findOrFail($id);
+        return $obj;
     }
 
-    public function destroy(Category $category)
+    public function update(Request $request, $id)
     {
-        $category->delete();
+        $validateData=$this->validate($request,$this->rulesUpdate());
+        $obj=$this->findOrFail($id);
+        $obj->update($validateData);
+        return $obj;
+    }
+
+    public function destroy($id)
+    {
+        $obj=$this->findOrFail($id);
+        $obj->delete();
         return response()->noContent();
     }
-    */
+    
 }
