@@ -13,11 +13,11 @@ steps:
 
 - id: "Copiando .env"
   name: "gcr.io/cloud.builder/docker"
-  args: ['exec','-t','micro-videos-app','cp','.env','.env']
+  args: ['exec','-t','micro-videos-app','cp','.env.example','.env']
 
 - id: "Copiando .env.testing"
   name: "gcr.io/cloud.builder/docker"
-  args: ['exec','-t','micro-videos-app','cp','.env.testing','.env.testing']
+  args: ['exec','-t','micro-videos-app','cp','..env.testing.example','.env.testing']
 - id: "Rodando key:generate"
   name: 'cgr.io/cloud.builder/docker'
   args: ['exec','-t','micro-videos-app','php','/var/www/artisan','key:generate']
