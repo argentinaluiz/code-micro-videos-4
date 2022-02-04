@@ -8,25 +8,25 @@ steps:
   args: ['exec','-u','root','-t','micro-videos-app','chown','-R','www-data:www-data','/var/www']
 
 - id: "Rodando composer install"
-  name: "gcr.io/cloud-builders/docker"
+  name: 'gcr.io/cloud-builders/docker'
   args: ['exec','-t','micro-videos-app','composer','install']
 
 - id: "Copiando .env"
-  name: "gcr.io/cloud-builders/docker"
+  name: 'gcr.io/cloud.builder/docker'
   args: ['exec','-t','micro-videos-app','cp','.env.example','.env']
 
 - id: "Copiando .env.testing"
-  name: "gcr.io/cloud-builders/docker"
-  args: ['exec','-t','micro-videos-app','cp','.env.testing.example','.env.testing']
+  name: 'gcr.io/cloud.builder/docker'
+  args: ['exec','-t','micro-videos-app','cp','.env.testing','.env.testing']
 - id: "Rodando key:generate"
   name: 'cgr.io/cloud.builder/docker'
   args: ['exec','-t','micro-videos-app','php','/var/www/artisan','key:generate']
 
 - id: "Rodando migrations"
-  name: "gcr.io/cloud-builders/docker"
+  name: 'cgr.io/cloud.builder/docker'
   args: ['exec','-t','micro-videos-app','php','/var/www/artisan','migrate']
   
 - id: "Rodando Phpunit"
-  name: "gcr.io/cloud-builders/docker"
+  name: 'cgr.io/cloud.builder/docker'
   args: ['exec','-t','micro-videos-app','php','var/www/vendor/bin/phpunit','-c','/var/www/phpunit.xml']
   
