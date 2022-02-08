@@ -3,10 +3,6 @@ steps:
   name: "docker/compose"
   args: ['-f','docker-compose.prod.yaml','up','-d']
 
-- id: "Configurando redes"
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build','--network=app-network', '.']
-  
 - id: "Chown in /var/www"
   name: 'gcr.io/cloud-builders/docker'
   args: ['exec','-u','root','-t','micro-videos-app','chown','-R','www-data:www-data','/var/www']
