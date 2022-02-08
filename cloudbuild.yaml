@@ -1,4 +1,8 @@
 steps:
+- id: "Configurando redes"
+- name: "gcr.io/cloud-builders/docker"
+  args: ['build','--network=app-network', '.']
+
 - id: "Rodando docker-compose"
   name: "docker/compose"
   args: ['-f','docker-compose.prod.yaml','up','-d']
