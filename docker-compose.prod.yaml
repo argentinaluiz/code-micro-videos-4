@@ -10,6 +10,8 @@ services:
         entrypoint: dockerize -wait tcp://db:3306 -timeout 40s
         volumes:
             - .:/var/www
+        networks:
+            - app-network
         depends_on:
             - db
             - redis
@@ -23,6 +25,8 @@ services:
             - "8000:80"
         volumes:
             - .:/var/www
+        networks:
+            - app-network
         depends_on:
             - app
 
@@ -38,6 +42,8 @@ services:
         environment:
             - MYSQL_ROOT_PASSWORD=root
             - MYSQL_USER=root
+        networks:
+            - app-network
 
 
     redis:
@@ -45,8 +51,16 @@ services:
         container_name: micro-videos-redis
         expose:
             - 6379
+        networks:
+            - app-network
 
 networks:
-  default:
-    external:
-      name: cloudbuild
+    app-network:
+        driver: bridge
+
+#Configuração que foi tentada, encontrada na documentação do CGP, ja que parece ser um problema com a rede.
+#Porem não funcionou.
+#networks:
+#  default:
+#    external:
+#      name: cloudbuild
