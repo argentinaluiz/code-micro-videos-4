@@ -7,7 +7,7 @@ services:
             context: .
             dockerfile: Dockerfile.prod
         container_name: micro-videos-app
-        entrypoint: dockerize -wait tcp://db:3306 -timeout 40s
+        entrypoint: php-fpm
         volumes:
             - .:/var/www
         networks:
