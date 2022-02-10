@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\BasicCrudController;
 use App\Models\Video;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+
 
 class VideoController extends BasicCrudController
 {
@@ -18,15 +21,15 @@ class VideoController extends BasicCrudController
             'opened'=>'boolean',
             'rating'=>'required|in:'.implode(',',Video::RATING_LIST),
             'duration'=>'required|integer',
-            'categories_id'=>'required|array|exists:categories,id,deleted_at,null',
-            'genres_id'=>'required|array|exists:genres,id,deleted_at,null'
+            'categories_id'=>'required|array|exists:categories,id',
+            'genres_id'=>'required|array|exists:genres,id'
         ];
     }
 
     public function store(Request $request){
         $validateData=$this->validate($request,$this->rulesStore());
         $self=$this;
-        $out=\DB::transaction(function() use ($request,$validateData,$self){
+        $out=DB::transaction(function() use ($request,$validateData,$self){
             $obj=$this->model()::create($validateData);
             $self->handleRelations($obj,$request);
             return $obj;
@@ -38,7 +41,7 @@ class VideoController extends BasicCrudController
         $validateData=$this->validate($request,$this->rulesStore());
         $obj=$this->findOrFail($id);
         $self=$this;
-        $obj=\DB::transaction(function() use ($request,$validateData,$self,$obj){
+        $obj=DB::transaction(function() use ($request,$validateData,$self,$obj){
             $obj->update($validateData);
             $self->handleRelations($obj,$request);
             return $obj;
